@@ -6,6 +6,7 @@ TCT.TCT
 -------
 .. automodule:: TCT.TCT
    :members:
+   :undoc-members:
 
 TCT.name_resolver
 -----
