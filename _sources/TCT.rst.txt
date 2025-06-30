@@ -22,3 +22,8 @@ TCT.translator_node
 -------------------
 .. automodule:: TCT.translator_node
    :members:
+
+TCT.translator_kpinfo
+-------------------
+.. automodule:: TCT.translator_kpinfo
+   :members:
