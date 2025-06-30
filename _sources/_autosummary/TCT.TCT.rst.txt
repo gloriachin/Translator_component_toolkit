@@ -1,0 +1,70 @@
+﻿TCT.TCT
+=======
+
+.. automodule:: TCT.TCT
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      Gene_id_converter
+      ID_convert_to_preferred_name_nodeNormalizer
+      TCT_help
+      TRAPI_json_validation
+      add_new_API_for_query
+      ask_chatGPT
+      ask_chatGPT4
+      connecting_two_dots_two_hops
+      extract_json
+      filter_APIs
+      find_link
+      find_path_by_two_ends
+      find_similar_category
+      find_similar_predicates
+      format_id
+      format_query_json
+      format_query_json_old
+      get_KP_metadata
+      get_SmartAPI_Translator_KP_info
+      get_Translator_API_URL
+      get_Translator_APIs
+      get_curie
+      get_pair_annotation
+      get_ranking_by_infores
+      get_ranking_by_kp
+      get_ranking_by_predicates
+      get_similar_category
+      get_similar_predicate
+      list_Translator_APIs
+      list_functions
+      load_json_template
+      merge_by_ranking_index
+      merge_ranking_by_number_of_infores
+      parallel_api_query
+      parse_KG
+      parse_network_result
+      parse_pair_annotation
+      parse_result_old
+      plot_graph_by_API
+      plot_graph_by_infores
+      plot_graph_by_predicates
+      plot_heatmap
+      plot_heatmap_ui
+      plot_path_bar
+      query_KP
+      query_KP_all
+      query_chatGPT
+      query_chatGPT4
+      rank_by_primary_infores
+      rank_by_primary_infores_input_as_list
+      ranking_result_by_predicates_object
+      ranking_result_by_predicates_subject
+      select_API
+      select_concept
+      select_predicates_inKP
+      select_result_to_analysis
+      visulization_one_hop_ranking
+      visulization_one_hop_ranking_input_as_list
+      visulize_path
+   
