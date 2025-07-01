@@ -12,6 +12,10 @@ Welcome to Translator Component Toolkit's documentation!
 
    readme
    components
+   name_resolver
+   node_normalizer
+   translator_kpinfo
+   translator_node
    TCT
 
 Indices and tables

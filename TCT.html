@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>TCT package &#8212; Translator Component Toolkit 0.1 documentation</title>
+    <title>TCT utility functions &#8212; Translator Component Toolkit 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
@@ -14,7 +14,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Translator Components" href="components.html" />
+    <link rel="prev" title="TCT.translator_node" href="translator_node.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -32,10 +32,8 @@
 
           <div class="body" role="main">
             
-  <section id="tct-package">
-<h1>TCT package<a class="headerlink" href="#tct-package" title="Link to this heading">¶</a></h1>
-<section id="module-TCT.TCT">
-<span id="tct-tct"></span><h2>TCT.TCT<a class="headerlink" href="#module-TCT.TCT" title="Link to this heading">¶</a></h2>
+  <section id="module-TCT.TCT">
+<span id="tct-utility-functions"></span><h1>TCT utility functions<a class="headerlink" href="#module-TCT.TCT" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.Gene_id_converter">
 <span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">Gene_id_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">API_url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TCT.TCT.Gene_id_converter" title="Link to this definition">¶</a></dt>
@@ -370,151 +368,6 @@ KPname = “” # it should be one of the names in APInames</p>
 <dd></dd></dl>
 
 </section>
-<section id="tct-name-resolver">
-<h2>TCT.name_resolver<a class="headerlink" href="#tct-name-resolver" title="Link to this heading">¶</a></h2>
-<p id="module-TCT.name_resolver">This is a wrapper around the Name Resolver API.</p>
-<p>API docs: <a class="reference external" href="https://name-lookup.ci.transltr.io/doc">https://name-lookup.ci.transltr.io/doc</a></p>
-<dl class="py function">
-<dt class="sig sig-object py" id="TCT.name_resolver.lookup">
-<span class="sig-prename descclassname"><span class="pre">TCT.name_resolver.</span></span><span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_top_response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_synonyms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TCT.name_resolver.lookup" title="Link to this definition">¶</a></dt>
-<dd><p>A wrapper around the <cite>lookup</cite> api endpoint. Given a query string, this returns a TranslatorNode object or a list of TranslatorNode objects corresponding to the given name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>query</strong><span class="classifier">str</span></dt><dd><p>Query string</p>
-</dd>
-<dt><strong>return_top_response</strong><span class="classifier">bool</span></dt><dd><p>If true, this returns only the top response. If false, this returns a list of all responses. Default: True</p>
-</dd>
-<dt><strong>return_synonyms</strong><span class="classifier">bool</span></dt><dd><p>If true, the resulting TranslatorNode objects contain a list of synonyms. If false, they do not include synonyms. Default: False</p>
-</dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Other arguments to <cite>lookup</cite></p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>TranslatorNode object if return_top_response is True, list of TranslatorNode objects if return_top_response is False</dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span><span class="p">(</span><span class="s1">&#39;AML&#39;</span><span class="p">)</span>
-<span class="go">TranslatorNode(curie=&#39;MONDO:0018874&#39;, label=&#39;acute myeloid leukemia&#39;, types=[&#39;biolink:Disease&#39;, &#39;biolink:DiseaseOrPhenotypicFeature&#39;, &#39;biolink:BiologicalEntity&#39;, &#39;biolink:ThingWithTaxon&#39;, &#39;biolink:NamedThing&#39;, &#39;biolink:Entity&#39;], synonyms=None, curie_synonyms=None)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCT.name_resolver.synonyms">
-<span class="sig-prename descclassname"><span class="pre">TCT.name_resolver.</span></span><span class="sig-name descname"><span class="pre">synonyms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TCT.name_resolver.synonyms" title="Link to this definition">¶</a></dt>
-<dd><p>A wrapper around the <cite>synonyms</cite> api endpoint. Given a query string, this returns a TranslatorNode object or a list of TranslatorNode objects corresponding to the given name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>query</strong><span class="classifier">str</span></dt><dd><p>Query CURIE</p>
-</dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Other arguments to <cite>synonyms</cite></p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>Dict of CURIE id</strong><span class="classifier">TranslatorNode</span></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-TCT.node_normalizer">
-<span id="tct-node-normalizer"></span><h2>TCT.node_normalizer<a class="headerlink" href="#module-TCT.node_normalizer" title="Link to this heading">¶</a></h2>
-<p>This is a wrapper around the Node Normalizer API.</p>
-<p>API docs: <a class="reference external" href="https://nodenorm.transltr.io/docs">https://nodenorm.transltr.io/docs</a></p>
-<dl class="py function">
-<dt class="sig sig-object py" id="TCT.node_normalizer.get_normalized_nodes">
-<span class="sig-prename descclassname"><span class="pre">TCT.node_normalizer.</span></span><span class="sig-name descname"><span class="pre">get_normalized_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_equivalent_identifiers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TCT.node_normalizer.get_normalized_nodes" title="Link to this definition">¶</a></dt>
-<dd><p>A wrapper around the <cite>get_normalized_nodes</cite> api endpoint. Given a CURIE or a list of CURIEs, this returns a list of normalized identifiers.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>query</strong><span class="classifier">str</span></dt><dd><p>Query CURIE</p>
-</dd>
-<dt><strong>return_equivalent_identifiers</strong><span class="classifier">bool</span></dt><dd><p>Whether or not to return a list of equivalent identifiers along with the TranslatorNode. Default: False</p>
-</dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Other arguments to <cite>get_normalized_nodes</cite> (e.g. <cite>conflate</cite> for gene-protein conflation, <cite>drug_chemical_conflate</cite> for drug-chemical conflation)</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>If query is a single CURIE, returns a single TranslatorNode.</dt><dd></dd>
-<dt><strong>If query is a list of CURIEs, a dict of CURIE id</strong><span class="classifier">TranslatorNode for every node in the query.</span></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_normalized_nodes</span><span class="p">(</span><span class="s1">&#39;MESH:D014867&#39;</span><span class="p">,</span> <span class="n">return_equivalent_identifiers</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="go">TranslatorNode(curie=&#39;CHEBI:15377&#39;, label=&#39;Water&#39;, types=[&#39;biolink:SmallMolecule&#39;, &#39;biolink:MolecularEntity&#39;, &#39;biolink:ChemicalEntity&#39;, &#39;biolink:PhysicalEssence&#39;, &#39;biolink:ChemicalOrDrugOrTreatment&#39;, &#39;biolink:ChemicalEntityOrGeneOrGeneProduct&#39;, &#39;biolink:ChemicalEntityOrProteinOrPolypeptide&#39;, &#39;biolink:NamedThing&#39;, &#39;biolink:PhysicalEssenceOrOccurrent&#39;], synonyms=None, curie_synonyms=None)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</section>
-<section id="module-TCT.translator_node">
-<span id="tct-translator-node"></span><h2>TCT.translator_node<a class="headerlink" href="#module-TCT.translator_node" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="TCT.translator_node.TranslatorNode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TCT.translator_node.</span></span><span class="sig-name descname"><span class="pre">TranslatorNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curie</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synonyms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curie_synonyms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TCT.translator_node.TranslatorNode" title="Link to this definition">¶</a></dt>
-<dd><p>Class for Translator graph nodes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>curie_synonyms</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#TCT.translator_node.TranslatorNode.identifier" title="TCT.translator_node.TranslatorNode.identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">identifier</span></code></a></dt><dd><p>identifier is the CURIE id for the node.</p>
-</dd>
-<dt><strong>label</strong></dt><dd></dd>
-<dt><strong>synonyms</strong></dt><dd></dd>
-<dt><strong>types</strong></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="TCT.translator_node.TranslatorNode.curie">
-<span class="sig-name descname"><span class="pre">curie</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#TCT.translator_node.TranslatorNode.curie" title="Link to this definition">¶</a></dt>
-<dd><p>name</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="TCT.translator_node.TranslatorNode.identifier">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">identifier</span></span><a class="headerlink" href="#TCT.translator_node.TranslatorNode.identifier" title="Link to this definition">¶</a></dt>
-<dd><p>identifier is the CURIE id for the node.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="TCT.translator_node.TranslatorNode.label">
-<span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#TCT.translator_node.TranslatorNode.label" title="Link to this definition">¶</a></dt>
-<dd><p>list of biolink types</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="TCT.translator_node.TranslatorNode.synonyms">
-<span class="sig-name descname"><span class="pre">synonyms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#TCT.translator_node.TranslatorNode.synonyms" title="Link to this definition">¶</a></dt>
-<dd><p>list of synonymous CURIE ids (in the same order as synonyms)</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="TCT.translator_node.TranslatorNode.types">
-<span class="sig-name descname"><span class="pre">types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#TCT.translator_node.TranslatorNode.types" title="Link to this definition">¶</a></dt>
-<dd><p>list of synonymous labels</p>
-</dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="tct-translator-kpinfo">
-<h2>TCT.translator_kpinfo<a class="headerlink" href="#tct-translator-kpinfo" title="Link to this heading">¶</a></h2>
-</section>
-</section>
 
 
           </div>
@@ -546,12 +399,70 @@ KPname = “” # it should be one of the names in APInames</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Translator component toolkit (TCT)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="components.html">Translator Components</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">TCT package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-TCT.TCT">TCT.TCT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tct-name-resolver">TCT.name_resolver</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-TCT.node_normalizer">TCT.node_normalizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-TCT.translator_node">TCT.translator_node</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tct-translator-kpinfo">TCT.translator_kpinfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="name_resolver.html">TCT.name_resolver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="node_normalizer.html">TCT.node_normalizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translator_kpinfo.html">TCT.translator_kpinfo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translator_node.html">TCT.translator_node</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TCT utility functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.Gene_id_converter"><code class="docutils literal notranslate"><span class="pre">Gene_id_converter()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ID_convert_to_preferred_name_nodeNormalizer"><code class="docutils literal notranslate"><span class="pre">ID_convert_to_preferred_name_nodeNormalizer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.TCT_help"><code class="docutils literal notranslate"><span class="pre">TCT_help()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.TRAPI_json_validation"><code class="docutils literal notranslate"><span class="pre">TRAPI_json_validation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.add_new_API_for_query"><code class="docutils literal notranslate"><span class="pre">add_new_API_for_query()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ask_chatGPT"><code class="docutils literal notranslate"><span class="pre">ask_chatGPT()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ask_chatGPT4"><code class="docutils literal notranslate"><span class="pre">ask_chatGPT4()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.connecting_two_dots_two_hops"><code class="docutils literal notranslate"><span class="pre">connecting_two_dots_two_hops()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.extract_json"><code class="docutils literal notranslate"><span class="pre">extract_json()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.filter_APIs"><code class="docutils literal notranslate"><span class="pre">filter_APIs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.find_link"><code class="docutils literal notranslate"><span class="pre">find_link()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.find_path_by_two_ends"><code class="docutils literal notranslate"><span class="pre">find_path_by_two_ends()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.find_similar_category"><code class="docutils literal notranslate"><span class="pre">find_similar_category()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.find_similar_predicates"><code class="docutils literal notranslate"><span class="pre">find_similar_predicates()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.format_id"><code class="docutils literal notranslate"><span class="pre">format_id()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.format_query_json"><code class="docutils literal notranslate"><span class="pre">format_query_json()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.format_query_json_old"><code class="docutils literal notranslate"><span class="pre">format_query_json_old()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_KP_metadata"><code class="docutils literal notranslate"><span class="pre">get_KP_metadata()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_SmartAPI_Translator_KP_info"><code class="docutils literal notranslate"><span class="pre">get_SmartAPI_Translator_KP_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_Translator_API_URL"><code class="docutils literal notranslate"><span class="pre">get_Translator_API_URL()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_Translator_APIs"><code class="docutils literal notranslate"><span class="pre">get_Translator_APIs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_curie"><code class="docutils literal notranslate"><span class="pre">get_curie()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_pair_annotation"><code class="docutils literal notranslate"><span class="pre">get_pair_annotation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_ranking_by_infores"><code class="docutils literal notranslate"><span class="pre">get_ranking_by_infores()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_ranking_by_kp"><code class="docutils literal notranslate"><span class="pre">get_ranking_by_kp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_ranking_by_predicates"><code class="docutils literal notranslate"><span class="pre">get_ranking_by_predicates()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_similar_category"><code class="docutils literal notranslate"><span class="pre">get_similar_category()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_similar_predicate"><code class="docutils literal notranslate"><span class="pre">get_similar_predicate()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.list_Translator_APIs"><code class="docutils literal notranslate"><span class="pre">list_Translator_APIs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.list_functions"><code class="docutils literal notranslate"><span class="pre">list_functions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.load_json_template"><code class="docutils literal notranslate"><span class="pre">load_json_template()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.merge_by_ranking_index"><code class="docutils literal notranslate"><span class="pre">merge_by_ranking_index()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.merge_ranking_by_number_of_infores"><code class="docutils literal notranslate"><span class="pre">merge_ranking_by_number_of_infores()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.parallel_api_query"><code class="docutils literal notranslate"><span class="pre">parallel_api_query()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.parse_KG"><code class="docutils literal notranslate"><span class="pre">parse_KG()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.parse_network_result"><code class="docutils literal notranslate"><span class="pre">parse_network_result()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.parse_pair_annotation"><code class="docutils literal notranslate"><span class="pre">parse_pair_annotation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.parse_result_old"><code class="docutils literal notranslate"><span class="pre">parse_result_old()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.plot_graph_by_API"><code class="docutils literal notranslate"><span class="pre">plot_graph_by_API()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.plot_graph_by_infores"><code class="docutils literal notranslate"><span class="pre">plot_graph_by_infores()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.plot_graph_by_predicates"><code class="docutils literal notranslate"><span class="pre">plot_graph_by_predicates()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.plot_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_heatmap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.plot_heatmap_ui"><code class="docutils literal notranslate"><span class="pre">plot_heatmap_ui()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.plot_path_bar"><code class="docutils literal notranslate"><span class="pre">plot_path_bar()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.query_KP"><code class="docutils literal notranslate"><span class="pre">query_KP()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.query_KP_all"><code class="docutils literal notranslate"><span class="pre">query_KP_all()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.query_chatGPT"><code class="docutils literal notranslate"><span class="pre">query_chatGPT()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.query_chatGPT4"><code class="docutils literal notranslate"><span class="pre">query_chatGPT4()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.rank_by_primary_infores"><code class="docutils literal notranslate"><span class="pre">rank_by_primary_infores()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.rank_by_primary_infores_input_as_list"><code class="docutils literal notranslate"><span class="pre">rank_by_primary_infores_input_as_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ranking_result_by_predicates_object"><code class="docutils literal notranslate"><span class="pre">ranking_result_by_predicates_object()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ranking_result_by_predicates_subject"><code class="docutils literal notranslate"><span class="pre">ranking_result_by_predicates_subject()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.select_API"><code class="docutils literal notranslate"><span class="pre">select_API()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.select_concept"><code class="docutils literal notranslate"><span class="pre">select_concept()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.select_predicates_inKP"><code class="docutils literal notranslate"><span class="pre">select_predicates_inKP()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.select_result_to_analysis"><code class="docutils literal notranslate"><span class="pre">select_result_to_analysis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.visulization_one_hop_ranking"><code class="docutils literal notranslate"><span class="pre">visulization_one_hop_ranking()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.visulization_one_hop_ranking_input_as_list"><code class="docutils literal notranslate"><span class="pre">visulization_one_hop_ranking_input_as_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.visulize_path"><code class="docutils literal notranslate"><span class="pre">visulize_path()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -560,7 +471,7 @@ KPname = “” # it should be one of the names in APInames</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="components.html" title="previous chapter">Translator Components</a></li>
+      <li>Previous: <a href="translator_node.html" title="previous chapter">TCT.translator_node</a></li>
   </ul></li>
 </ul>
 </div>
