@@ -39,7 +39,7 @@
 <p>API docs: <a class="reference external" href="https://nodenorm.transltr.io/docs">https://nodenorm.transltr.io/docs</a></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="TCT.node_normalizer.get_normalized_nodes">
-<span class="sig-prename descclassname"><span class="pre">TCT.node_normalizer.</span></span><span class="sig-name descname"><span class="pre">get_normalized_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_equivalent_identifiers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TCT.node_normalizer.get_normalized_nodes" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">TCT.node_normalizer.</span></span><span class="sig-name descname"><span class="pre">get_normalized_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_equivalent_identifiers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/node_normalizer.html#get_normalized_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.node_normalizer.get_normalized_nodes" title="Link to this definition">¶</a></dt>
 <dd><p>A wrapper around the <cite>get_normalized_nodes</cite> api endpoint. Given a CURIE or a list of CURIEs, this returns a list of normalized identifiers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -55,7 +55,7 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>If query is a single CURIE, returns a single TranslatorNode.</dt><dd></dd>
-<dt><strong>If query is a list of CURIEs, a dict of CURIE id</strong><span class="classifier">TranslatorNode for every node in the query.</span></dt><dd></dd>
+<dt>If query is a list of CURIEs, a dict of CURIE id to TranslatorNode for every node in the query.</dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -96,7 +96,7 @@
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Translator component toolkit (TCT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="components.html">Translator Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="name_resolver.html">TCT.name_resolver</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TCT.node_normalizer</a><ul>

@@ -10,7 +10,7 @@ Welcome to Translator Component Toolkit's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   readme
+   intro
    components
    name_resolver
    node_normalizer
