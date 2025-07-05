@@ -34,6 +34,8 @@
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TCT</span><span class="w"> </span><span class="kn">import</span> <span class="n">translator_metakg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TCT</span><span class="w"> </span><span class="kn">import</span> <span class="n">translator_kpinfo</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">find_link</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
     <span class="c1">#pre = &quot;https://dev.smart-api.info/api/metakg/consolidated?size=2000&amp;q=%28api.x-translator.component%3AKP+AND+api.name%3A&quot; # This works for the previous version</span>

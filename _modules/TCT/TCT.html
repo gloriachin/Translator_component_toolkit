@@ -1043,7 +1043,7 @@
                                  <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
                                  <span class="n">title_fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> 
                                  <span class="n">output_png</span><span class="o">=</span><span class="s2">&quot;NE_heatmap.png&quot;</span><span class="p">):</span>
-    <span class="c1">#matplotlib.use(&#39;Agg&#39;)</span>
+    <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
     
     <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Ranking of one-hop nodes by primary infores&quot;</span>
     <span class="n">ylab</span> <span class="o">=</span> <span class="s2">&quot;infores&quot;</span>
@@ -1220,6 +1220,115 @@
     <span class="k">return</span><span class="p">(</span><span class="n">query_json_temp</span><span class="p">)</span></div>
 
 
+
+<div class="viewcode-block" id="Path_finder">
+<a class="viewcode-back" href="../../TCT.html#TCT.TCT.Path_finder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">Path_finder</span><span class="p">(</span><span class="n">input_node1</span><span class="p">,</span> <span class="n">input_node2</span><span class="p">,</span> <span class="n">intermediate_categories</span><span class="p">,</span> <span class="n">APInames</span><span class="p">,</span> <span class="n">metaKG</span><span class="p">,</span> <span class="n">API_predicates</span><span class="p">,</span> <span class="n">input_node1_category</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">input_node2_category</span> <span class="o">=</span> <span class="p">[]):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">TCT</span><span class="w"> </span><span class="kn">import</span> <span class="n">name_resolver</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">TCT</span><span class="w"> </span><span class="kn">import</span> <span class="n">translator_metakg</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">TCT</span><span class="w"> </span><span class="kn">import</span> <span class="n">translator_kpinfo</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">TCT</span><span class="w"> </span><span class="kn">import</span> <span class="n">translator_query</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function is used to find paths between two input nodes with intermediate categories.</span>
+<span class="sd">    </span>
+<span class="sd">    --------------</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    input_node1 (str): The first input node, can be a gene name, protein name, or any other identifier.</span>
+<span class="sd">    input_node2 (str): The second input node, can be a gene name, protein name, or any other identifier.</span>
+<span class="sd">    intermediate_categories (list): A list of intermediate categories to be used in the path finding process.</span>
+<span class="sd">    </span>
+<span class="sd">    --------------</span>
+<span class="sd">    Returns:</span>
+<span class="sd">    paths (DataFrame): A DataFrame containing the paths found between the two input nodes.</span>
+<span class="sd">    input_node1_id (str): The curie id of the first input node.</span>
+<span class="sd">    input_node2_id (str): The curie id of the second input node.</span>
+<span class="sd">    result1 (dict): The result of the query for the first input node.</span>
+<span class="sd">    result2 (dict): The result of the query for the second input node.</span>
+<span class="sd">    result_parsed1 (DataFrame): The parsed results for the first input node.</span>
+<span class="sd">    result_parsed2 (DataFrame): The parsed results for the second input node.</span>
+<span class="sd">    result_ranked_by_primary_infores1 (DataFrame): The ranked results for the first input node based on primary infores.</span>
+<span class="sd">    result_ranked_by_primary_infores2 (DataFrame): The ranked results for the second</span>
+<span class="sd">    --------------</span>
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; paths, input_node1_id, input_node2_id, result1, result2, result_parsed1, result_parsed2, result_ranked_by_primary_infores1, result_ranked_by_primary_infores2 = Path_finder(&#39;WNT7B&#39;, &#39;NPM1&#39;, [&#39;biolink:Gene&#39;, &#39;biolink:Protein&#39;])</span>
+<span class="sd">    --------------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">input_node1_info</span> <span class="o">=</span> <span class="n">name_resolver</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">input_node1</span><span class="p">)</span>
+    <span class="n">input_node1_id</span> <span class="o">=</span> <span class="n">input_node1_info</span><span class="o">.</span><span class="n">curie</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">input_node1_id</span><span class="p">)</span>
+    <span class="n">input_node1_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">input_node1_id</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_node1_category</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">input_node1_category</span> <span class="o">=</span> <span class="n">input_node1_info</span><span class="o">.</span><span class="n">types</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">input_node1_category</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">input_node1_category</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">input_node1_info</span><span class="o">.</span><span class="n">types</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_node1_category</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">input_node1_category</span> <span class="o">=</span> <span class="n">input_node1_info</span><span class="o">.</span><span class="n">types</span>
+
+    <span class="n">input_node2_info</span> <span class="o">=</span> <span class="n">name_resolver</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">input_node2</span><span class="p">)</span>
+    <span class="n">input_node2_id</span> <span class="o">=</span> <span class="n">input_node2_info</span><span class="o">.</span><span class="n">curie</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">input_node2_id</span><span class="p">)</span>
+    <span class="n">input_node2_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">input_node2_id</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_node2_category</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">input_node2_category</span> <span class="o">=</span> <span class="n">input_node2_info</span><span class="o">.</span><span class="n">types</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">input_node2_category</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">input_node2_category</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">input_node2_info</span><span class="o">.</span><span class="n">types</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_node2_category</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">input_node2_category</span> <span class="o">=</span> <span class="n">input_node2_info</span><span class="o">.</span><span class="n">types</span>
+
+
+    <span class="c1"># Step 5: Select predicates and APIs based on the intermediate categories</span>
+    <span class="n">sele_predicates1</span><span class="p">,</span> <span class="n">sele_APIs1</span><span class="p">,</span> <span class="n">API_URLs1</span> <span class="o">=</span> <span class="n">sele_predicates_API</span><span class="p">(</span><span class="n">input_node1_category</span><span class="p">,</span>
+                                                                <span class="n">intermediate_categories</span><span class="p">,</span>
+                                                                <span class="n">metaKG</span><span class="p">,</span> <span class="n">APInames</span><span class="p">)</span>
+    <span class="n">sele_predicates2</span><span class="p">,</span> <span class="n">sele_APIs2</span><span class="p">,</span> <span class="n">API_URLs2</span> <span class="o">=</span> <span class="n">sele_predicates_API</span><span class="p">(</span><span class="n">input_node2_category</span><span class="p">,</span>
+                                                                <span class="n">intermediate_categories</span><span class="p">,</span>
+                                                                <span class="n">metaKG</span><span class="p">,</span> <span class="n">APInames</span><span class="p">)</span>    
+
+    <span class="n">query_json1</span> <span class="o">=</span> <span class="n">format_query_json</span><span class="p">(</span><span class="n">input_node1_list</span><span class="p">,</span>  <span class="c1"># a list of identifiers for input node1</span>
+                                    <span class="p">[],</span>  <span class="c1"># id list for the intermediate node, it can be empty list if only want to query node1</span>
+                                    <span class="n">input_node1_category</span><span class="p">,</span>  <span class="c1"># a list of categories of input node1</span>
+                                    <span class="n">intermediate_categories</span><span class="p">,</span>  <span class="c1"># a list of categories of the intermediate node</span>
+                                    <span class="n">sele_predicates1</span><span class="p">)</span> <span class="c1"># a list of predicates</span>
+
+    <span class="n">query_json2</span> <span class="o">=</span> <span class="n">format_query_json</span><span class="p">(</span><span class="n">input_node2_list</span><span class="p">,</span>  <span class="c1"># a list of identifiers for input node2</span>
+                                    <span class="p">[],</span>  <span class="c1"># id list for the intermediate node, it can be empty list if only want to query node2</span>
+                                    <span class="n">input_node2_category</span><span class="p">,</span>  <span class="c1"># a list of categories of input node2</span>
+                                    <span class="n">intermediate_categories</span><span class="p">,</span>  <span class="c1"># a list of categories of the intermediate node</span>
+                                    <span class="n">sele_predicates2</span><span class="p">)</span> <span class="c1"># a list of predicates</span>
+    
+    <span class="n">result1</span> <span class="o">=</span> <span class="n">translator_query</span><span class="o">.</span><span class="n">parallel_api_query</span><span class="p">(</span><span class="n">query_json</span><span class="o">=</span><span class="n">query_json1</span><span class="p">,</span> 
+                             <span class="n">select_APIs</span> <span class="o">=</span> <span class="n">sele_APIs1</span><span class="p">,</span> 
+                             <span class="n">APInames</span><span class="o">=</span><span class="n">APInames</span><span class="p">,</span> 
+                             <span class="n">API_predicates</span><span class="o">=</span><span class="n">API_predicates</span><span class="p">,</span> 
+                             <span class="n">max_workers</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sele_APIs1</span><span class="p">))</span>
+    <span class="n">result2</span> <span class="o">=</span> <span class="n">translator_query</span><span class="o">.</span><span class="n">parallel_api_query</span><span class="p">(</span><span class="n">query_json</span><span class="o">=</span><span class="n">query_json2</span><span class="p">,</span> 
+                                <span class="n">select_APIs</span> <span class="o">=</span> <span class="n">sele_APIs2</span><span class="p">,</span> 
+                                <span class="n">APInames</span><span class="o">=</span><span class="n">APInames</span><span class="p">,</span> 
+                                <span class="n">API_predicates</span><span class="o">=</span><span class="n">API_predicates</span><span class="p">,</span> 
+                                <span class="n">max_workers</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sele_APIs2</span><span class="p">))</span>
+
+    <span class="n">result_parsed1</span> <span class="o">=</span> <span class="n">parse_KG</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
+        <span class="c1"># Step 7: Ranking the results. This ranking method is based on the number of unique</span>
+        <span class="c1"># primary infores. It can only be used to rank the results with one defined node.</span>
+    <span class="n">result_ranked_by_primary_infores1</span> <span class="o">=</span> <span class="n">rank_by_primary_infores</span><span class="p">(</span><span class="n">result_parsed1</span><span class="p">,</span> <span class="n">input_node1_id</span><span class="p">)</span>   <span class="c1"># input_node1_id is the curie id of the</span>
+
+    <span class="n">result_parsed2</span> <span class="o">=</span> <span class="n">parse_KG</span><span class="p">(</span><span class="n">result2</span><span class="p">)</span>
+    <span class="n">result_ranked_by_primary_infores2</span> <span class="o">=</span> <span class="n">rank_by_primary_infores</span><span class="p">(</span><span class="n">result_parsed2</span><span class="p">,</span> <span class="n">input_node2_id</span><span class="p">)</span>   <span class="c1"># input_node2_id is the curie id of the</span>
+
+    <span class="n">possible_paths</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">result_ranked_by_primary_infores1</span><span class="p">[</span><span class="s1">&#39;output_node&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">result_ranked_by_primary_infores2</span><span class="p">[</span><span class="s1">&#39;output_node&#39;</span><span class="p">])))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of possible paths: &quot;</span><span class="p">,</span> <span class="n">possible_paths</span><span class="p">)</span>
+
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">merge_ranking_by_number_of_infores</span><span class="p">(</span><span class="n">result_ranked_by_primary_infores1</span><span class="p">,</span> <span class="n">result_ranked_by_primary_infores2</span><span class="p">,</span> 
+                                            <span class="n">top_n</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+                                            <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                            <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,)</span>
+    
+    <span class="k">return</span> <span class="n">paths</span><span class="p">,</span>  <span class="n">input_node1_id</span><span class="p">,</span> <span class="n">input_node2_id</span><span class="p">,</span> <span class="n">result1</span><span class="p">,</span> <span class="n">result2</span><span class="p">,</span> <span class="n">result_parsed1</span><span class="p">,</span> <span class="n">result_parsed2</span><span class="p">,</span> <span class="n">result_ranked_by_primary_infores1</span><span class="p">,</span> <span class="n">result_ranked_by_primary_infores2</span></div>
+
+
 <span class="c1"># used. Dec 5, 2023 (Example_query_one_hop_with_category.ipynb)</span>
 <div class="viewcode-block" id="query_KP">
 <a class="viewcode-back" href="../../TCT.html#TCT.TCT.query_KP">[docs]</a>
@@ -1252,6 +1361,20 @@
 <div class="viewcode-block" id="parallel_api_query">
 <a class="viewcode-back" href="../../TCT.html#TCT.TCT.parallel_api_query">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parallel_api_query</span><span class="p">(</span><span class="n">URLS</span><span class="p">,</span> <span class="n">query_json</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Queries multiple APIs in parallel and merges the results into a single knowledge graph.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    URLS: list of API URLs to query</span>
+<span class="sd">    query_json: the query JSON to be sent to each API</span>
+<span class="sd">    max_workers: number of parallel workers to use for querying</span>
+<span class="sd">    Returns a merged knowledge graph from all successful API responses.</span>
+<span class="sd">    -------</span>
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; result = TCT.parallel_api_query(API_URLs,query_json=query_json, max_workers=len(API_URLs1))</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1"># Parallel query</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="n">as_completed</span>

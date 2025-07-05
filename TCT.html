@@ -45,6 +45,11 @@
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="TCT.TCT.Path_finder">
+<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">Path_finder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_node1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_categories</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">API_predicates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node1_category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node2_category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#Path_finder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.Path_finder" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.TCT_help">
 <span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">TCT_help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#TCT_help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.TCT_help" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -248,7 +253,8 @@ Returns a DataFrame with the SmartAPI Translator KP info.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.parallel_api_query">
 <span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">parallel_api_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">URLS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#parallel_api_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.parallel_api_query" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Queries multiple APIs in parallel and merges the results into a single knowledge graph.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.parse_KG">
@@ -448,6 +454,7 @@ KPname = “” # it should be one of the names in APInames</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TCT utility functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.Gene_id_converter"><code class="docutils literal notranslate"><span class="pre">Gene_id_converter()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ID_convert_to_preferred_name_nodeNormalizer"><code class="docutils literal notranslate"><span class="pre">ID_convert_to_preferred_name_nodeNormalizer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.Path_finder"><code class="docutils literal notranslate"><span class="pre">Path_finder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.TCT_help"><code class="docutils literal notranslate"><span class="pre">TCT_help()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.TRAPI_json_validation"><code class="docutils literal notranslate"><span class="pre">TRAPI_json_validation()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.add_new_API_for_query"><code class="docutils literal notranslate"><span class="pre">add_new_API_for_query()</span></code></a></li>
