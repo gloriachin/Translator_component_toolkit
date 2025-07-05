@@ -69,17 +69,6 @@ predicates = [“biolink:positively_correlated_with”, “biolink:physically_in
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="TCT.TCT.format_query_json_old">
-<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">format_query_json_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject_categories</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_categories</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#format_query_json_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.format_query_json_old" title="Link to this definition">¶</a></dt>
-<dd><p>Example input:
-subject_ids = [“NCBIGene:3845”]
-object_ids = []
-subject_categories = [“biolink:Gene”]
-object_categories = [“biolink:Gene”]
-predicates = [“biolink:positively_correlated_with”, “biolink:physically_interacts_with”]</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.get_KP_metadata">
 <span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">get_KP_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#get_KP_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.get_KP_metadata" title="Link to this definition">¶</a></dt>
 <dd><p>This function is used to get the metadata of the KPs in the APInames dictionary.
@@ -215,12 +204,12 @@ KPname = “” # it should be one of the names in APInames</p>
 <li class="toctree-l1"><a class="reference internal" href="node_normalizer.html">TCT.node_normalizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="translator_kpinfo.html">TCT.translator_kpinfo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="translator_metakg.html">TCT.translator_metakg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translator_query.html">TCT.translator_query</a></li>
 <li class="toctree-l1"><a class="reference internal" href="translator_node.html">TCT.translator_node</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TCT utility functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.add_new_API_for_query"><code class="docutils literal notranslate"><span class="pre">add_new_API_for_query()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.add_plover_API"><code class="docutils literal notranslate"><span class="pre">add_plover_API()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.format_query_json"><code class="docutils literal notranslate"><span class="pre">format_query_json()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.format_query_json_old"><code class="docutils literal notranslate"><span class="pre">format_query_json_old()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_KP_metadata"><code class="docutils literal notranslate"><span class="pre">get_KP_metadata()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_SmartAPI_Translator_KP_info"><code class="docutils literal notranslate"><span class="pre">get_SmartAPI_Translator_KP_info()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_Translator_APIs"><code class="docutils literal notranslate"><span class="pre">get_Translator_APIs()</span></code></a></li>
