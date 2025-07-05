@@ -350,16 +350,35 @@ subject_predicate_object_primary_knowledge_sources_aggregator_knowledge_sources<
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="TCT.TCT.sele_predicates_API">
+<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">sele_predicates_API</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_node1_category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node2_category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#sele_predicates_API"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.sele_predicates_API" title="Link to this definition">¶</a></dt>
+<dd><p>Selects predicates, APIs, and API URLs for the given input node categories.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.select_API">
 <span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">select_API</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#select_API"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.select_API" title="Link to this definition">¶</a></dt>
-<dd><p>sub_list = [“biolink:Gene”, “biolink:Protein”]
+<dd><p>selects the APIs that can connect the given subject and object categories in the meta knowledge graph.</p>
+<p>sub_list = [“biolink:Gene”, “biolink:Protein”]
 obj_list = [“biolink:Gene”, “biolink:Disease”]</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;biolink:Gene&quot;</span><span class="p">,</span> <span class="s2">&quot;biolink:Disease&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Translator_KP_info</span><span class="p">,</span><span class="n">APInames</span><span class="o">=</span> <span class="n">translator_kpinfo</span><span class="o">.</span><span class="n">get_translator_kp_info</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Translator_KP_info</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metaKG</span> <span class="o">=</span> <span class="n">translator_metakg</span><span class="o">.</span><span class="n">get_KP_metadata</span><span class="p">(</span><span class="n">APInames</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">metaKG</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">APInames</span><span class="p">,</span><span class="n">metaKG</span> <span class="o">=</span> <span class="n">translator_metakg</span><span class="o">.</span><span class="n">add_plover_API</span><span class="p">(</span><span class="n">APInames</span><span class="p">,</span> <span class="n">metaKG</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">selected_apis</span> <span class="o">=</span> <span class="n">select_API</span><span class="p">(</span><span class="n">sub_list</span><span class="p">,</span> <span class="n">obj_list</span><span class="p">,</span> <span class="n">metaKG</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">selected_apis</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.select_concept">
 <span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">select_concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#select_concept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.select_concept" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Selects the predicates connecting the given subject and object categories in the meta knowledge graph.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.select_predicates_inKP">
@@ -480,6 +499,7 @@ KPname = “” # it should be one of the names in APInames</p>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.rank_by_primary_infores_input_as_list"><code class="docutils literal notranslate"><span class="pre">rank_by_primary_infores_input_as_list()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ranking_result_by_predicates_object"><code class="docutils literal notranslate"><span class="pre">ranking_result_by_predicates_object()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ranking_result_by_predicates_subject"><code class="docutils literal notranslate"><span class="pre">ranking_result_by_predicates_subject()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.sele_predicates_API"><code class="docutils literal notranslate"><span class="pre">sele_predicates_API()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.select_API"><code class="docutils literal notranslate"><span class="pre">select_API()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.select_concept"><code class="docutils literal notranslate"><span class="pre">select_concept()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.select_predicates_inKP"><code class="docutils literal notranslate"><span class="pre">select_predicates_inKP()</span></code></a></li>

@@ -513,7 +513,7 @@
             <span class="n">object_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;biolink:&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
             <span class="n">url_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">APInames</span><span class="p">[</span><span class="n">KP</span><span class="p">])</span>
 
-    <span class="n">result_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span> <span class="s1">&#39;API&#39;</span><span class="p">:</span> <span class="n">API_list</span><span class="p">,</span> <span class="s1">&#39;KG_category&#39;</span><span class="p">:</span> <span class="n">KG_category_list</span><span class="p">,</span> <span class="s2">&quot;Subject&quot;</span><span class="p">:</span><span class="n">subject_list</span><span class="p">,</span> <span class="s2">&quot;Object&quot;</span><span class="p">:</span><span class="n">object_list</span><span class="p">,</span> <span class="s2">&quot;URL&quot;</span><span class="p">:</span><span class="n">url_list</span><span class="p">})</span>
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span> <span class="s1">&#39;API&#39;</span><span class="p">:</span> <span class="n">API_list</span><span class="p">,</span> <span class="s1">&#39;Predicate&#39;</span><span class="p">:</span> <span class="n">KG_category_list</span><span class="p">,</span> <span class="s2">&quot;Subject&quot;</span><span class="p">:</span><span class="n">subject_list</span><span class="p">,</span> <span class="s2">&quot;Object&quot;</span><span class="p">:</span><span class="n">object_list</span><span class="p">,</span> <span class="s2">&quot;URL&quot;</span><span class="p">:</span><span class="n">url_list</span><span class="p">})</span>
     
     <span class="k">return</span><span class="p">(</span><span class="n">result_df</span><span class="p">)</span></div>
 
@@ -613,9 +613,23 @@
 <a class="viewcode-back" href="../../TCT.html#TCT.TCT.select_API">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">select_API</span><span class="p">(</span><span class="n">sub_list</span><span class="p">,</span><span class="n">obj_list</span><span class="p">,</span> <span class="n">metaKG</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    selects the APIs that can connect the given subject and object categories in the meta knowledge graph.</span>
+<span class="sd">    </span>
 <span class="sd">    sub_list = [&quot;biolink:Gene&quot;, &quot;biolink:Protein&quot;]</span>
 <span class="sd">    obj_list = [&quot;biolink:Gene&quot;, &quot;biolink:Disease&quot;]</span>
-<span class="sd">    </span>
+
+<span class="sd">    ---------</span>
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; sub_list = [&quot;biolink:Gene&quot;, &quot;biolink:Protein&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; obj_list = [&quot;biolink:Gene&quot;, &quot;biolink:Disease&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; Translator_KP_info,APInames= translator_kpinfo.get_translator_kp_info()</span>
+<span class="sd">    &gt;&gt;&gt; print(len(Translator_KP_info))</span>
+<span class="sd">    &gt;&gt;&gt; metaKG = translator_metakg.get_KP_metadata(APInames) </span>
+<span class="sd">    &gt;&gt;&gt; print(metaKG.shape)</span>
+<span class="sd">    &gt;&gt;&gt; APInames,metaKG = translator_metakg.add_plover_API(APInames, metaKG)</span>
+<span class="sd">    &gt;&gt;&gt; selected_apis = select_API(sub_list, obj_list, metaKG)</span>
+<span class="sd">    &gt;&gt;&gt; print(selected_apis)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">new_sub_list</span> <span class="o">=</span> <span class="n">sub_list</span>
     <span class="n">new_obj_list</span> <span class="o">=</span> <span class="n">obj_list</span>
@@ -631,16 +645,48 @@
     <span class="k">return</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;API&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)))</span></div>
 
 
+
+
 <span class="c1"># used. Dec 5, 2023  (Example_query_one_hop_with_category.ipynb)</span>
 <div class="viewcode-block" id="select_concept">
 <a class="viewcode-back" href="../../TCT.html#TCT.TCT.select_concept">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">select_concept</span><span class="p">(</span><span class="n">sub_list</span><span class="p">,</span><span class="n">obj_list</span><span class="p">,</span><span class="n">metaKG</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Selects the predicates connecting the given subject and object categories in the meta knowledge graph.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1">#result_df = pd.read_csv(&quot;KP_metadata.csv&quot;)</span>
     <span class="n">df1</span> <span class="o">=</span> <span class="n">metaKG</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">metaKG</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sub_list</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">metaKG</span><span class="p">[</span><span class="s1">&#39;Object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">obj_list</span><span class="p">))]</span>
     <span class="n">df2</span> <span class="o">=</span> <span class="n">metaKG</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">metaKG</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">obj_list</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">metaKG</span><span class="p">[</span><span class="s1">&#39;Object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sub_list</span><span class="p">))]</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span><span class="n">df2</span><span class="p">])</span>
-    <span class="k">return</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;KG_category&#39;</span><span class="p">])))</span></div>
+    <span class="k">return</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Predicate&#39;</span><span class="p">])))</span></div>
 
+<div class="viewcode-block" id="sele_predicates_API">
+<a class="viewcode-back" href="../../TCT.html#TCT.TCT.sele_predicates_API">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sele_predicates_API</span><span class="p">(</span><span class="n">input_node1_category</span><span class="p">,</span><span class="n">input_node2_category</span><span class="p">,</span><span class="n">metaKG</span><span class="p">,</span> <span class="n">APInames</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Selects predicates, APIs, and API URLs for the given input node categories.</span>
+
+<span class="sd">    -----------</span>
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; sele_predicates, sele_APIs, API_URLs = sele_predicates_API(input_node1_category,input_node2_category,metaKG, APInames)</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">sele_predicates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">select_concept</span><span class="p">(</span><span class="n">sub_list</span><span class="o">=</span><span class="n">input_node1_category</span><span class="p">,</span>
+                                                 <span class="n">obj_list</span><span class="o">=</span><span class="n">input_node2_category</span><span class="p">,</span>
+                                                 <span class="n">metaKG</span><span class="o">=</span><span class="n">metaKG</span><span class="p">)))</span>
+    <span class="n">sele_APIs</span> <span class="o">=</span> <span class="n">select_API</span><span class="p">(</span><span class="n">sub_list</span><span class="o">=</span><span class="n">input_node1_category</span><span class="p">,</span>
+                           <span class="n">obj_list</span><span class="o">=</span><span class="n">input_node2_category</span><span class="p">,</span>
+                           <span class="n">metaKG</span><span class="o">=</span><span class="n">metaKG</span><span class="p">)</span>
+    
+    <span class="n">API_URLs</span> <span class="o">=</span> <span class="n">get_Translator_API_URL</span><span class="p">(</span><span class="n">sele_APIs</span><span class="p">,</span> <span class="n">APInames</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sele_predicates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No predicates found for the given categories.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sele_APIs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No APIs found for the given categories.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">API_URLs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No API URLs found for the given categories.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sele_predicates</span><span class="p">,</span> <span class="n">sele_APIs</span><span class="p">,</span> <span class="n">API_URLs</span></div>
 
 <span class="c1"># used. Dec 5, 2023 (Example_query_one_hop_with_category.ipynb)</span>
 <div class="viewcode-block" id="get_Translator_API_URL">
@@ -1131,40 +1177,45 @@
     <span class="n">query_json_temp</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;query_graph&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;n0&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;ids&quot;</span><span class="p">:[],</span>
-                        <span class="s2">&quot;categories&quot;</span><span class="p">:[]</span>
-                    <span class="p">},</span>
-                    <span class="s2">&quot;n1&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="c1">#&quot;ids&quot;:[],</span>
-                        <span class="s2">&quot;categories&quot;</span><span class="p">:[]</span>
-                <span class="p">}</span>
-                <span class="p">},</span>
+                
                 <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;e1&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;subject&quot;</span><span class="p">:</span> <span class="s2">&quot;n0&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;n1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;e00&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="c1">#&quot;e1&quot;: {</span>
+                        <span class="s2">&quot;subject&quot;</span><span class="p">:</span> <span class="s2">&quot;n01&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="s2">&quot;n00&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;predicates&quot;</span><span class="p">:</span> <span class="n">predicates</span>
-                    <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">},</span>
+                <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;n00&quot;</span><span class="p">:</span> <span class="p">{</span>    
+                        <span class="s2">&quot;ids&quot;</span><span class="p">:</span><span class="n">subject_ids</span><span class="p">,</span> <span class="c1"># required</span>
+                        <span class="c1">#&quot;categories&quot;:[] # optional, if not provided, it will be empty</span>
+                        <span class="p">},</span>
+                    <span class="s2">&quot;n01&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="c1">#&quot;ids&quot;:[],</span>
+                        <span class="s2">&quot;categories&quot;</span><span class="p">:[]</span> <span class="c1"># required</span>
+                        <span class="p">}}</span>
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
-    <span class="p">}</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subject_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">query_json_temp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;query_graph&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">][</span><span class="s2">&quot;n0&quot;</span><span class="p">][</span><span class="s2">&quot;ids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject_ids</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">object_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">query_json_temp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;query_graph&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">][</span><span class="s2">&quot;n1&quot;</span><span class="p">][</span><span class="s2">&quot;ids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_ids</span>
+        <span class="c1">#query_json_temp[&quot;message&quot;][&quot;query_graph&quot;][&quot;nodes&quot;][&quot;n0&quot;][&quot;ids&quot;] = subject_ids</span>
+        <span class="n">query_json_temp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;query_graph&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">][</span><span class="s2">&quot;n00&quot;</span><span class="p">][</span><span class="s2">&quot;ids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject_ids</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subject_categories</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">query_json_temp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;query_graph&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">][</span><span class="s2">&quot;n0&quot;</span><span class="p">][</span><span class="s2">&quot;categories&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject_categories</span>
+    <span class="c1">#if len(object_ids) &gt; 0:</span>
+        <span class="c1">#query_json_temp[&quot;message&quot;][&quot;query_graph&quot;][&quot;nodes&quot;][&quot;n1&quot;][&quot;ids&quot;] = object_ids</span>
+        <span class="c1">#query_json_temp[&quot;message&quot;][&quot;query_graph&quot;][&quot;nodes&quot;][&quot;n00&quot;][&quot;ids&quot;] = object_ids</span>
+
+    <span class="c1">#if len(subject_categories) &gt; 0:</span>
+    <span class="c1">#    query_json_temp[&quot;message&quot;][&quot;query_graph&quot;][&quot;nodes&quot;][&quot;n01&quot;][&quot;categories&quot;] = subject_categories</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">object_categories</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">query_json_temp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;query_graph&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">][</span><span class="s2">&quot;n1&quot;</span><span class="p">][</span><span class="s2">&quot;categories&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_categories</span>
+        <span class="c1">#query_json_temp[&quot;message&quot;][&quot;query_graph&quot;][&quot;nodes&quot;][&quot;n1&quot;][&quot;categories&quot;] = object_categories</span>
+        <span class="n">query_json_temp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;query_graph&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">][</span><span class="s2">&quot;n01&quot;</span><span class="p">][</span><span class="s2">&quot;categories&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_categories</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predicates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">query_json_temp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;query_graph&quot;</span><span class="p">][</span><span class="s2">&quot;edges&quot;</span><span class="p">][</span><span class="s2">&quot;e1&quot;</span><span class="p">][</span><span class="s2">&quot;predicates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicates</span>
+        <span class="n">query_json_temp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;query_graph&quot;</span><span class="p">][</span><span class="s2">&quot;edges&quot;</span><span class="p">][</span><span class="s2">&quot;e00&quot;</span><span class="p">][</span><span class="s2">&quot;predicates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicates</span>
 
     <span class="k">return</span><span class="p">(</span><span class="n">query_json_temp</span><span class="p">)</span></div>
 
