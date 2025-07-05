@@ -15,6 +15,7 @@ Welcome to Translator Component Toolkit's documentation!
    name_resolver
    node_normalizer
    translator_kpinfo
+   translator_metakg
    translator_node
    TCT
 

@@ -62,6 +62,22 @@ Example: APInames, metaKG = add_new_API_for_query(APInames, metaKG, “BigGIM_BM
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="TCT.TCT.add_plover_API">
+<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">add_plover_API</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#add_plover_API"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.add_plover_API" title="Link to this definition">¶</a></dt>
+<dd><p>This function is used to add the Plover APIs developed by the CATRAX team to the APInames and metaKG.
+Current APIs include :
+CATRAX BigGIM DrugResponse Performance Phase, 
+CATRAX Pharmacogenomics, 
+Clinical Trials, 
+Drug Approvals, 
+Multiomics, 
+Microbiome, 
+and RTX KG2.</p>
+<p>Example: 
+&gt;&gt;&gt; APInames, metaKG = add_plover_API(APInames, metaKG)</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.ask_chatGPT">
 <span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">ask_chatGPT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt_text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#ask_chatGPT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.ask_chatGPT" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -135,8 +151,13 @@ predicates = [“biolink:positively_correlated_with”, “biolink:physically_in
 
 <dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.get_KP_metadata">
-<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">get_KP_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#get_KP_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.get_KP_metadata" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">get_KP_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#get_KP_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.get_KP_metadata" title="Link to this definition">¶</a></dt>
+<dd><p>This function is used to get the metadata of the KPs in the APInames dictionary.
+Example:
+&gt;&gt;&gt; metaKG = TCT.get_KP_metadata(APInames) 
+&gt;&gt;&gt; All_predicates = list(set(metaKG[‘KG_category’]))
+All_categories = list((set(list(set(metaKG[‘Subject’]))+list(set(metaKG[‘Object’])))))</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="TCT.TCT.get_SmartAPI_Translator_KP_info">
@@ -410,6 +431,7 @@ KPname = “” # it should be one of the names in APInames</p>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.TCT_help"><code class="docutils literal notranslate"><span class="pre">TCT_help()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.TRAPI_json_validation"><code class="docutils literal notranslate"><span class="pre">TRAPI_json_validation()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.add_new_API_for_query"><code class="docutils literal notranslate"><span class="pre">add_new_API_for_query()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.add_plover_API"><code class="docutils literal notranslate"><span class="pre">add_plover_API()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ask_chatGPT"><code class="docutils literal notranslate"><span class="pre">ask_chatGPT()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.ask_chatGPT4"><code class="docutils literal notranslate"><span class="pre">ask_chatGPT4()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.connecting_two_dots_two_hops"><code class="docutils literal notranslate"><span class="pre">connecting_two_dots_two_hops()</span></code></a></li>
