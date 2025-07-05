@@ -16,6 +16,7 @@ Welcome to Translator Component Toolkit's documentation!
    node_normalizer
    translator_kpinfo
    translator_metakg
+   translator_query
    translator_node
    TCT
 
