@@ -35,26 +35,23 @@
   <section id="module-TCT.TCT">
 <span id="tct-utility-functions"></span><h1>TCT utility functions<a class="headerlink" href="#module-TCT.TCT" title="Link to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="TCT.TCT.add_new_API_for_query">
-<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">add_new_API_for_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newAPIname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newAPIurl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newAPIcategory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newAPIsubject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newAPIobject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#add_new_API_for_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.add_new_API_for_query" title="Link to this definition">¶</a></dt>
-<dd><p>This function is used to add a new API beyond the current list of APIs for query
-Example: APInames, metaKG = add_new_API_for_query(APInames, metaKG, “BigGIM_BMG”, “<a class="reference external" href="http://127.0.0.1:8000/find_path_by_predicate">http://127.0.0.1:8000/find_path_by_predicate</a>”, “Gene-physically_interacts_with-gene”, “Gene”, “Gene”)</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCT.TCT.add_plover_API">
-<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">add_plover_API</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#add_plover_API"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.add_plover_API" title="Link to this definition">¶</a></dt>
-<dd><p>This function is used to add the Plover APIs developed by the CATRAX team to the APInames and metaKG.
-Current APIs include :
-CATRAX BigGIM DrugResponse Performance Phase, 
-CATRAX Pharmacogenomics, 
-Clinical Trials, 
-Drug Approvals, 
-Multiomics, 
-Microbiome, 
-and RTX KG2.</p>
-<p>Example: 
-&gt;&gt;&gt; APInames, metaKG = add_plover_API(APInames, metaKG)</p>
+<dt class="sig sig-object py" id="TCT.TCT.Path_finder">
+<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">Path_finder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_node1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_categories</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">API_predicates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node1_category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node2_category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#Path_finder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.Path_finder" title="Link to this definition">¶</a></dt>
+<dd><p>This function is used to find paths between two input nodes with intermediate categories.</p>
+<p>input_node2 (str): The second input node, can be a gene name, protein name, or any other identifier.
+intermediate_categories (list): A list of intermediate categories to be used in the path finding process.</p>
+<p>input_node1_id (str): The curie id of the first input node.
+input_node2_id (str): The curie id of the second input node.
+result1 (dict): The result of the query for the first input node.
+result2 (dict): The result of the query for the second input node.
+result_parsed1 (DataFrame): The parsed results for the first input node.
+result_parsed2 (DataFrame): The parsed results for the second input node.
+result_ranked_by_primary_infores1 (DataFrame): The ranked results for the first input node based on primary infores.
+result_ranked_by_primary_infores2 (DataFrame): The ranked results for the second
+————–
+Example:
+&gt;&gt;&gt; paths, input_node1_id, input_node2_id, result1, result2, result_parsed1, result_parsed2, result_ranked_by_primary_infores1, result_ranked_by_primary_infores2 = Path_finder(‘WNT7B’, ‘NPM1’, [‘biolink:Gene’, ‘biolink:Protein’])
+————–</p>
 </dd></dl>
 
 <dl class="py function">
@@ -66,16 +63,6 @@ object_ids = []
 subject_categories = [“biolink:Gene”]
 object_categories = [“biolink:Gene”]
 predicates = [“biolink:positively_correlated_with”, “biolink:physically_interacts_with”]</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCT.TCT.get_KP_metadata">
-<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">get_KP_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#get_KP_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.get_KP_metadata" title="Link to this definition">¶</a></dt>
-<dd><p>This function is used to get the metadata of the KPs in the APInames dictionary.
-Example:
-&gt;&gt;&gt; metaKG = TCT.get_KP_metadata(APInames) 
-&gt;&gt;&gt; All_predicates = list(set(metaKG[‘KG_category’]))
-All_categories = list((set(list(set(metaKG[‘Subject’]))+list(set(metaKG[‘Object’])))))</p>
 </dd></dl>
 
 <dl class="py function">
@@ -97,12 +84,6 @@ Returns a DataFrame with the SmartAPI Translator KP info.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Translator_KP_info</span><span class="p">,</span><span class="n">APInames</span><span class="o">=</span> <span class="n">TCT</span><span class="o">.</span><span class="n">get_SmartAPI_Translator_KP_info</span><span class="p">()</span> 
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCT.TCT.parallel_api_query">
-<span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">parallel_api_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">URLS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#parallel_api_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.parallel_api_query" title="Link to this definition">¶</a></dt>
-<dd><p>Queries multiple APIs in parallel and merges the results into a single knowledge graph.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -207,13 +188,10 @@ KPname = “” # it should be one of the names in APInames</p>
 <li class="toctree-l1"><a class="reference internal" href="translator_query.html">TCT.translator_query</a></li>
 <li class="toctree-l1"><a class="reference internal" href="translator_node.html">TCT.translator_node</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TCT utility functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.add_new_API_for_query"><code class="docutils literal notranslate"><span class="pre">add_new_API_for_query()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.add_plover_API"><code class="docutils literal notranslate"><span class="pre">add_plover_API()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.Path_finder"><code class="docutils literal notranslate"><span class="pre">Path_finder()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.format_query_json"><code class="docutils literal notranslate"><span class="pre">format_query_json()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_KP_metadata"><code class="docutils literal notranslate"><span class="pre">get_KP_metadata()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_SmartAPI_Translator_KP_info"><code class="docutils literal notranslate"><span class="pre">get_SmartAPI_Translator_KP_info()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.get_Translator_APIs"><code class="docutils literal notranslate"><span class="pre">get_Translator_APIs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.parallel_api_query"><code class="docutils literal notranslate"><span class="pre">parallel_api_query()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.parse_KG"><code class="docutils literal notranslate"><span class="pre">parse_KG()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.rank_by_primary_infores"><code class="docutils literal notranslate"><span class="pre">rank_by_primary_infores()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#TCT.TCT.rank_by_primary_infores_input_as_list"><code class="docutils literal notranslate"><span class="pre">rank_by_primary_infores_input_as_list()</span></code></a></li>
