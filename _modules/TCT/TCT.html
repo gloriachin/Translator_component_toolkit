@@ -43,6 +43,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ipycytoscape</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TCT</span><span class="w"> </span><span class="kn">import</span> <span class="n">name_resolver</span>
 
 <span class="c1"># plt.switch_backend(&#39;module://ipykernel.pylab.backend_inline&#39;)</span>
 
@@ -2234,6 +2235,7 @@
     <span class="n">current_predicates2</span> <span class="o">=</span> <span class="n">query_json_cur_clean</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">][</span><span class="s1">&#39;query_graph&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">][</span><span class="s1">&#39;n1&#39;</span><span class="p">][</span><span class="s1">&#39;categories&#39;</span><span class="p">]</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">ask_chatGPT4</span><span class="p">(</span><span class="s2">&quot;The categories in the KG are: &quot;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ALL_categories</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;. The category in the current query are: &quot;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_predicates1</span> <span class="o">+</span> <span class="n">current_predicates2</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;. What categories are similar to the categories in the current query?&quot;</span><span class="p">)</span>
     <span class="k">return</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">visulize_path</span><span class="p">(</span><span class="n">input_node1_id</span><span class="p">,</span> <span class="n">intermediate_node</span><span class="p">,</span> <span class="n">input_node3_id</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">result2</span><span class="p">):</span>
