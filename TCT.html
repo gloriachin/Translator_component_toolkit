@@ -75,7 +75,7 @@ API_predicates = API_predicates)</p>
 <dt class="sig sig-object py" id="TCT.TCT.Path_finder">
 <span class="sig-prename descclassname"><span class="pre">TCT.TCT.</span></span><span class="sig-name descname"><span class="pre">Path_finder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_node1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intermediate_categories</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">APInames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metaKG</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">API_predicates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node1_category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_node2_category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCT/TCT.html#Path_finder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCT.TCT.Path_finder" title="Link to this definition">¶</a></dt>
 <dd><p>This function is used to find paths between two input nodes with intermediate categories.</p>
-<p>input_node2 (str): The second input node, can be a gene name, protein name, or any other identifier.
+<p>input_node2 (str): The second input node - should be a CURIE id.
 intermediate_categories (list): A list of intermediate categories to be used in the path finding process.</p>
 <p>input_node1_id (str): The curie id of the first input node.
 input_node2_id (str): The curie id of the second input node.
@@ -87,7 +87,7 @@ result_ranked_by_primary_infores1 (DataFrame): The ranked results for the first 
 result_ranked_by_primary_infores2 (DataFrame): The ranked results for the second
 ————–
 Example:
-&gt;&gt;&gt; paths, input_node1_id, input_node2_id, result1, result2, result_parsed1, result_parsed2, result_ranked_by_primary_infores1, result_ranked_by_primary_infores2 = Path_finder(‘WNT7B’, ‘NPM1’, [‘biolink:Gene’, ‘biolink:Protein’])
+&gt;&gt;&gt; paths, input_node1_id, input_node2_id, result1, result2, result_parsed1, result_parsed2, result_ranked_by_primary_infores1, result_ranked_by_primary_infores2 = Path_finder(‘NCBIGene:7477’, ‘NCBIGene:4869’, [‘biolink:Gene’, ‘biolink:Protein’]) # Input genes are WNT7B, NPM1
 ————–</p>
 </dd></dl>
 
