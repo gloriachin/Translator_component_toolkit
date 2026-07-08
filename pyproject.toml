@@ -36,8 +36,7 @@ dependencies = [
     'networkx',
     'igraph',
     'pyvis',
-    'zstandard',
-    'copy'
+    'zstandard'
 ]
 
 [project.scripts]
