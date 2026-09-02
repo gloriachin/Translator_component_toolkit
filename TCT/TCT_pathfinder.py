@@ -1,21 +1,37 @@
 # TCT Pathfinder...
+# reviewed by yjzhang, 2026-08-20
 import requests
 
+import pandas as pd
 from collections import Counter
 
-from . import node_normalizer
-from . import translator_query
-from .TCT import sele_predicates_API
+from typing import Any, Optional
 
-def format_query_json_for_pathfinder_with_constraints(subject_ids, 
-                                     object_ids=None,
+from . import translator_query
+from .config import service_url
+from .TCT import (
+    CategoryList,
+    FinderResult,
+    NodeInput,
+    TranslatorResources,
+    _build_finder_result,
+    _get_resources,
+    _normalize_categories,
+    _resolve_node,
+    sele_predicates_API,
+)
+
+
+
+def format_query_json_for_pathfinder_with_constraints(subject_ids:str,
+        object_ids:str,
         subject_categories=None,
         object_categories=None,
         predicates=None,
         constraints=None
-        ):
+        ) -> dict:
     """
-        format user's input into a query json for pathfinder pipeline with constraints on the intermediate node categories.
+    Format user's input into a query json for pathfinder pipeline with constraints on the intermediate node categories.
 
     Parameters
     ----------
@@ -31,20 +47,21 @@ def format_query_json_for_pathfinder_with_constraints(subject_ids,
         a list of predicates for the edge between subject and object nodes
     constraints : list
         a list of intermediate categories for the pathfinder pipeline, currently only one intermediate category is allowed in the constraints list. 
+
     Returns
     -------
     query_json_temp : dict
         a query json for pathfinder pipeline
     
-        Example
-        -------
-        query_json_temp = format_query_json_for_pathfinder_with_constraints(
-            subject_ids='NCBIGene:6774',
-            object_ids='NCBIGene:4170',
-            subject_categories=['biolink:Gene'],
-            object_categories=['biolink:Gene'],
-            predicates=['biolink:related_to'],
-            constraints=['biolink:Protein']
+    Examples
+    --------
+    >>> query_json_temp = format_query_json_for_pathfinder_with_constraints(
+        subject_ids='NCBIGene:6774',
+        object_ids='NCBIGene:4170',
+        subject_categories=['biolink:Gene'],
+        object_categories=['biolink:Gene'],
+        predicates=['biolink:related_to'],
+        constraints=['biolink:Protein'])
     """
     if constraints is None or len(constraints) == 0:
         constraints_intermediate_category = None
@@ -97,7 +114,7 @@ def format_query_json_for_pathfinder_with_constraints(subject_ids,
   
     return q
 
-def build_query_graph(start_node_id, end_node_id, start_node_categories=None, end_node_categories=None, constraints_path=None):
+def build_query_graph(start_node_id:str, end_node_id:str, start_node_categories=None, end_node_categories=None, constraints_path=None):
     """
     start_node_categories and end_node_categories are lists of categories.
     """
@@ -136,7 +153,7 @@ def build_query_graph(start_node_id, end_node_id, start_node_categories=None, en
     return q
 
 
-def generate_score_results(results, method='infores'):
+def generate_score_results(results:dict, method='infores'):
     """
     Generates a score dict, and a list of "analyses".
     method can be 'infores' or 'edges'
@@ -296,68 +313,21 @@ def parse_results_for_pathfinder(start_node_id:str, end_node_id:str, result1:dic
     return output
 
 
-def pathfinder(input_node1_id:str, input_node2_id:str,
-        intermediate_categories:list, APInames, metaKG, API_predicates,
-        scoring_method='infores'):
-    """
-    Returns a Pathfinder output for the given pair of nodes. scoring_method could be 'infores' or 'edges'.
-    """
-    # get categories for input nodes
-    normalized_node_dict = node_normalizer.get_normalized_nodes([input_node1_id, input_node2_id])
-    input_node1_info = normalized_node_dict[input_node1_id]
-    input_node1_list = [input_node1_id]
-    input_node1_category = input_node1_info.types
-
-    input_node2_info = normalized_node_dict[input_node2_id]
-    print(input_node2_id)
-    input_node2_list = [input_node2_id]
-
-    input_node2_category = input_node2_info.types
-
-    # Select predicates and APIs based on the intermediate categories
-    sele_predicates1, sele_APIs1, API_URLs1 = sele_predicates_API(input_node1_category,
-                                                                  intermediate_categories,
-                                                                  metaKG, APInames)
-    sele_predicates2, sele_APIs2, API_URLs2 = sele_predicates_API(intermediate_categories,
-                                                                  input_node2_category,
-                                                                  metaKG, APInames)
-    query_json1 = translator_query.format_query_json(input_node1_list,  # a list of identifiers for input node1
-                                    [],  # id list for the intermediate node, it can be empty list if only want to query node1
-                                    input_node1_category,  # a list of categories of input node1
-                                    intermediate_categories,  # a list of categories of the intermediate node
-                                    sele_predicates1) # a list of predicates
-
-    # for the second hop, we want the predicates to be...
-    query_json2 = translator_query.format_query_json([], 
-                                    input_node2_list,  
-                                    intermediate_categories,  # a list of categories of input node2
-                                    input_node2_category,  # a list of categories of the intermediate node
-                                    sele_predicates2) # a list of predicates
-
-    result1 = translator_query.parallel_api_query(query_json=query_json1,
-                             select_APIs = sele_APIs1,
-                             APInames=APInames,
-                             API_predicates=API_predicates,
-                             max_workers=len(sele_APIs1))
-    result2 = translator_query.parallel_api_query(query_json=query_json2,
-                                select_APIs = sele_APIs2,
-                                APInames=APInames,
-                                API_predicates=API_predicates,
-                                max_workers=len(sele_APIs2))
-    output = parse_results_for_pathfinder(input_node1_id, input_node2_id, result1, result2,
-            start_node_categories=input_node1_category,
-            end_node_categories=input_node2_category,
-            scoring_method=scoring_method,
-            get_node_info=True)
-
-    return result1, result2, output
-
-
-
 # define a function that uses the query_json as an template and change the ids and categories of the nodes
-def format_pathfinder_query(node1_id, node1_category, node2_id, node2_category):
+def format_pathfinder_query(node1_id:str, node1_category:str, node2_id:str, node2_category:str) -> dict:
     '''
-    
+    Formats a query to the Pathfinder API.
+
+    Params
+    ------
+    node1_id : str
+    node1_category : str
+    node2_id : str
+    node2_category : str
+
+    Returns
+    -------
+    A dict formatted as a JSON query to the Pathfinder API.
     '''
     query_json = {
         "message": {
@@ -393,17 +363,44 @@ def format_pathfinder_query(node1_id, node1_category, node2_id, node2_category):
     return query_json
 
 
-def query_aragorn_pathfinder(node1_id, node1_category, node2_id, node2_category):
-    aragorn_endpoint = 'https://shepherd.renci.org/aragorn/query'
-    #aragorn_endpoint = 'https://shepherd.ci.transltr.io/aragorn/query' new ci endpoint
+def query_aragorn_pathfinder(node1_id:str, node1_category:str, node2_id:str, node2_category:str) -> str:
+    """
+    This queries the ARAGORN Pathfinder API.
+
+    Params
+    ------
+    node1_id : str
+    node1_category : str
+    node2_id : str
+    node2_category : str
+
+    Returns
+    -------
+    A string (which should be a JSON) representing the result of an ARAGORN pathfinder query.
+    """
+    aragorn_endpoint = service_url("aragorn")
     query_current = format_pathfinder_query(node1_id, node1_category, node2_id, node2_category)
     response = requests.post(aragorn_endpoint, json=query_current)
     return response
 
 
-def query_aragorn_pathfinder_with_constraints(node1_id, node1_category, node2_id, node2_category, constraints):
-    aragorn_endpoint = 'https://shepherd.renci.org/aragorn/query'
-    #aragorn_endpoint = 'https://shepherd.ci.transltr.io/aragorn/query' # new ci endpoint
+def query_aragorn_pathfinder_with_constraints(node1_id:str, node1_category:str, node2_id:str, node2_category:str, constraints:list) -> str:
+    """
+    This queries the ARAGORN Pathfinder API with a list of constraints.
+
+    Params
+    ------
+    node1_id : str
+    node1_category : str
+    node2_id : str
+    node2_category : str
+    constraints : list
+
+    Returns
+    -------
+    A string (which should be a JSON) representing the result of an ARAGORN pathfinder query.
+    """
+    aragorn_endpoint = service_url("aragorn")
     query_current = format_query_json_for_pathfinder_with_constraints(
         subject_ids=node1_id,
         object_ids=node2_id,
@@ -414,14 +411,43 @@ def query_aragorn_pathfinder_with_constraints(node1_id, node1_category, node2_id
     response = requests.post(aragorn_endpoint, json=query_current)
     return response
 
-def query_arax_pathfinder(node1_id, node1_category, node2_id, node2_category):
-    ARAX_endpoint = 'https://arax.ci.transltr.io/api/arax/v1.4/query'
+def query_arax_pathfinder(node1_id:str, node1_category:str, node2_id:str, node2_category:str) -> str:
+    """
+    This queries the ARAX Pathfinder API.
+
+    Params
+    ------
+    node1_id : str
+    node1_category : str
+    node2_id : str
+    node2_category : str
+
+    Returns
+    -------
+    A string (which should be a JSON) representing the result of an ARAX pathfinder query.
+    """
+    ARAX_endpoint = service_url("arax")
     query_current = format_pathfinder_query(node1_id, node1_category, node2_id, node2_category)
     response = requests.post(ARAX_endpoint, json=query_current)
     return response
 
-def query_arax_pathfinder_with_constraints(node1_id, node1_category, node2_id, node2_category, constraints):
-    ARAX_endpoint = 'https://arax.ci.transltr.io/api/arax/v1.4/query'
+def query_arax_pathfinder_with_constraints(node1_id:str, node1_category:str, node2_id:str, node2_category:str, constraints:list) -> str:
+    """
+    This queries the ARAX Pathfinder API with a list of constraints.
+
+    Params
+    ------
+    node1_id : str
+    node1_category : str
+    node2_id : str
+    node2_category : str
+    constraints : list
+
+    Returns
+    -------
+    A string (which should be a JSON) representing the result of an ARAX pathfinder query.
+    """
+    ARAX_endpoint = service_url("arax")
     query_current = format_query_json_for_pathfinder_with_constraints(
         subject_ids=node1_id,
         object_ids=node2_id,
@@ -431,3 +457,140 @@ def query_arax_pathfinder_with_constraints(node1_id, node1_category, node2_id, n
     )
     response = requests.post(ARAX_endpoint, json=query_current)
     return response
+
+def query_TCT_pathfinder(
+    start: NodeInput,
+    end: NodeInput,
+    intermediate_categories: CategoryList,
+    *,
+    start_categories: Optional[CategoryList] = None,
+    end_categories: Optional[CategoryList] = None,
+    api_names: Optional[dict[str, str]] = None,
+    meta_kg: Optional[pd.DataFrame] = None,
+    api_predicates: Optional[dict[str, list[str]]] = None,
+    resources: Optional[TranslatorResources] = None,
+    scoring_method: str = "infores",
+    name_resolver_kwargs: Optional[dict[str, Any]] = None,
+    node_normalizer_kwargs: Optional[dict[str, Any]] = None,
+) -> FinderResult:
+    """
+    Find paths between two biomedical concepts using Translator KPs.
+
+    Parameters
+    ----------
+    start : str
+        Start node as either a CURIE (for example, ``"MONDO:0004979"``) or a
+        human-readable string (for example, ``"asthma"``).
+    end : str
+        End node as either a CURIE or human-readable string.
+    intermediate_categories : list[str]
+        Allowed categories for intermediate path nodes. Values may be short
+        names like ``"Gene"`` or full Biolink names like ``"biolink:Gene"``.
+    start_categories : list[str], optional
+        Category override for the start node. If omitted, categories are
+        inferred from Node Normalizer.
+    end_categories : list[str], optional
+        Category override for the end node. If omitted, categories are inferred
+        from Node Normalizer.
+    resources : TranslatorResources, optional
+        Preloaded Translator resources. If omitted, the module-level singleton
+        is loaded on first use and reused.
+    api_names, meta_kg, api_predicates : optional
+        Advanced partial overrides for the Translator resources used by the
+        pathfinder implementation.
+    scoring_method : str
+        Scoring method passed to the legacy parser. Current values are
+        ``"infores"`` and ``"edges"``.
+    name_resolver_kwargs : dict, optional
+        Extra keyword arguments for ``name_resolver.lookup``.
+    node_normalizer_kwargs : dict, optional
+        Extra keyword arguments for ``node_normalizer.get_normalized_nodes``.
+
+    Returns
+    -------
+    FinderResult
+        Convenience wrapper containing resolved input nodes, the parsed
+        knowledge graph, results, auxiliary graphs, and the raw TRAPI-style
+        output dictionary.
+
+    Examples
+    --------
+    >>> from TCT import query_TCT_pathfinder
+    >>> result = query_TCT_pathfinder("asthma", "albuterol", ["Gene"])
+    >>> result.resolved_nodes["start"].curie
+    'MONDO:0004979'
+    """
+    start_node = _resolve_node(
+        start,
+        name_resolver_kwargs=name_resolver_kwargs,
+        node_normalizer_kwargs=node_normalizer_kwargs,
+    )
+    end_node = _resolve_node(
+        end,
+        name_resolver_kwargs=name_resolver_kwargs,
+        node_normalizer_kwargs=node_normalizer_kwargs,
+    )
+    intermediate_categories = _normalize_categories(intermediate_categories) or []
+    start_categories = _normalize_categories(start_categories) or start_node.categories
+    end_categories = _normalize_categories(end_categories) or end_node.categories
+    resolved_resources = _get_resources(
+        resources=resources,
+        api_names=api_names,
+        meta_kg=meta_kg,
+        api_predicates=api_predicates,
+    )
+
+    predicates1, apis1, _ = sele_predicates_API(
+        start_categories,
+        intermediate_categories,
+        resolved_resources.meta_kg,
+        resolved_resources.api_names,
+    )
+    predicates2, apis2, _ = sele_predicates_API(
+        intermediate_categories,
+        end_categories,
+        resolved_resources.meta_kg,
+        resolved_resources.api_names,
+    )
+    query1 = translator_query.format_query_json(
+        [start_node.curie],
+        [],
+        start_categories,
+        intermediate_categories,
+        predicates1,
+    )
+    query2 = translator_query.format_query_json(
+        [],
+        [end_node.curie],
+        intermediate_categories,
+        end_categories,
+        predicates2,
+    )
+    result1 = translator_query.parallel_api_query(
+        query_json=query1,
+        select_APIs=apis1,
+        APInames=resolved_resources.api_names,
+        API_predicates=resolved_resources.api_predicates,
+        max_workers=max(1, len(apis1)),
+    )
+    result2 = translator_query.parallel_api_query(
+        query_json=query2,
+        select_APIs=apis2,
+        APInames=resolved_resources.api_names,
+        API_predicates=resolved_resources.api_predicates,
+        max_workers=max(1, len(apis2)),
+    )
+    raw_output = parse_results_for_pathfinder(
+        start_node.curie,
+        end_node.curie,
+        result1,
+        result2,
+        start_node_categories=start_categories,
+        end_node_categories=end_categories,
+        scoring_method=scoring_method,
+        get_node_info=True,
+    )
+    return _build_finder_result(
+        raw_output,
+        resolved_nodes={"start": start_node, "end": end_node},
+    )

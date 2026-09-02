@@ -3,20 +3,18 @@ This is a wrapper around the Node Annotator API.
 
 API docs: https://annotator.transltr.io/
 """
+# reviewed by yjzhang, 2026-08-19
 import urllib.parse
 
 import requests
 
-from .translator_node import TranslatorNode
-
-URL = 'https://annotator.transltr.io/'
-"""This is the root URL for the API."""
+from .config import service_url
 
 def status():
     """
     Returns the status of the Node Annotator API.
     """
-    response = requests.get(f'{URL}status')
+    response = requests.get(urllib.parse.urljoin(service_url("node_annotator"), "status"))
     response.raise_for_status()
     return response.json()
 
@@ -25,7 +23,7 @@ def lookup_curie(curie: str, **kwargs):
     return lookup_curies([curie], **kwargs)[curie]
 
 
-def lookup_curies(curies: list[str], **kwargs):
+def lookup_curies(curies: list[str], **kwargs) -> dict[str, dict]:
     """
     A wrapper around the `curies` API endpoint. Given a list of CURIEs, this returns a dictionary where each
     CURIE is mapped to a list of annotations.
@@ -48,7 +46,7 @@ def lookup_curies(curies: list[str], **kwargs):
     >>> lookup_curies(['MESH:D014867'])
     >>> lookup_curies(['NCIT:C34373', 'NCBIGene:1756'])
     """
-    path = urllib.parse.urljoin(URL, 'curie')
+    path = urllib.parse.urljoin(service_url("node_annotator"), 'curie')
     response = requests.post(path, json={'ids': curies, **kwargs})
     response.raise_for_status()
 
