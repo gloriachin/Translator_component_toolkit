@@ -3,25 +3,24 @@ This is a wrapper around the Name Resolver API.
 
 API docs: https://name-lookup.ci.transltr.io/docs
 """
+# reviewed by yjzhang, 2026-08-19
 import urllib.parse
 
 import requests
 
+from .config import service_url
 from .translator_node import TranslatorNode
 
-URL = 'https://name-lookup.ci.transltr.io/'
-"""This is the root URL for the API."""
-
-def status():
+def status() -> str:
     """
     Returns the status of the Name Resolver API.
     """
-    response = requests.get(URL + 'status')
+    response = requests.get(urllib.parse.urljoin(service_url("name_resolver"), "status"))
     response.raise_for_status()
     return response.json()
 
 
-def lookup(query: str, return_top_response:bool=True, return_synonyms:bool=False, limit:int=10, **kwargs):
+def lookup(query: str, return_top_response:bool=True, return_synonyms:bool=False,  limit:int=10, **kwargs) -> TranslatorNode | list[TranslatorNode]:
     """
     A wrapper around the `lookup` api endpoint. Given a query string, this returns a TranslatorNode object or a list of TranslatorNode objects corresponding to the given name.
 
@@ -33,10 +32,17 @@ def lookup(query: str, return_top_response:bool=True, return_synonyms:bool=False
         If true, this returns only the top response. If false, this returns a list of all responses. Default: True
     return_synonyms : bool
         If true, the resulting TranslatorNode objects contain a list of synonyms. If false, they do not include synonyms. Default: False
+    only_taxa : str
+        The taxonomic restriction for the query. Default: 'NCBITaxon:9606'
     limit : int
         The number of results to return.
     **kwargs
-        Other arguments to `lookup`. Some possible arguments: `limit=20` would limit the results to 20. `autocomplete=True` indicates that the query string can be incomplete. `biolink_type="biolink:Disease"` indicates that all returned results should be diseases. `only_taxa='NCBITaxon:9606` indicates that only Homo sapiens results should be returned. For more examples, see [this](https://name-lookup.ci.transltr.io/docs#/lookup/lookup_curies_get_lookup_get).
+        Other arguments to `lookup`. Some possible arguments: 
+        `limit=20` would limit the results to 20. 
+        `autocomplete=True` indicates that the query string can be incomplete. 
+        `biolink_type="biolink:Disease"` indicates that all returned results should be diseases. 
+        `only_taxa='NCBITaxon:9606` indicates that only Homo sapiens results should be returned.
+        For more examples, see [this](https://name-lookup.ci.transltr.io/docs#/lookup/lookup_curies_get_lookup_get).
 
     Returns
     -------
@@ -46,11 +52,11 @@ def lookup(query: str, return_top_response:bool=True, return_synonyms:bool=False
     --------
     >>> lookup('AML')
     TranslatorNode(curie='MONDO:0018874', label='acute myeloid leukemia', types=['biolink:Disease', 'biolink:DiseaseOrPhenotypicFeature', 'biolink:BiologicalEntity', 'biolink:ThingWithTaxon', 'biolink:NamedThing', 'biolink:Entity'], synonyms=None, curie_synonyms=None)
-    >>> lookup('IFNG', only_taxa='NCBITaxon:9606')
+    >>> lookup('IFNG', only_taxa='NCBITaxon:9606') # It provides the human gene for IFNG
     TranslatorNode(curie='NCBIGene:3458', label='IFNG', types=['biolink:Gene', 'biolink:GeneOrGeneProduct', 'biolink:GenomicEntity', 'biolink:ChemicalEntityOrGeneOrGeneProduct', 'biolink:PhysicalEssence', 'biolink:OntologyClass', 'biolink:BiologicalEntity', 'biolink:ThingWithTaxon', 'biolink:NamedThing', 'biolink:Entity', 'biolink:PhysicalEssenceOrOccurrent', 'biolink:MacromolecularMachineMixin', 'biolink:Protein', 'biolink:GeneProductMixin', 'biolink:Polypeptide', 'biolink:ChemicalEntityOrProteinOrPolypeptide'], synonyms=None, curie_synonyms=None, attributes=None, taxa=['NCBITaxon:9606'])
     >>> lookup('AML', return_top_response=False, biolink_type="biolink:Disease")
     """
-    path = urllib.parse.urljoin(URL, 'lookup')
+    path = urllib.parse.urljoin(service_url("name_resolver"), 'lookup')
     # set autocomplete to be false by default
     if 'autocomplete' not in kwargs:
         kwargs['autocomplete'] = False
@@ -72,7 +78,7 @@ def lookup(query: str, return_top_response:bool=True, return_synonyms:bool=False
         raise requests.RequestException('Response from server had error, code ' + str(response.status_code) + ' ' + str(response))
 
 
-def synonyms(query: str|list, **kwargs):
+def synonyms(query: str|list, **kwargs) -> dict[str, TranslatorNode]:
     """
     A wrapper around the `synonyms` api endpoint. Given a CURIE or a list of CURIEs, this returns a dict of CURIE id : TranslatorNode for all synonyms for the given query.
 
@@ -87,7 +93,7 @@ def synonyms(query: str|list, **kwargs):
     -------
     Dict of CURIE id : TranslatorNode
     """
-    path = urllib.parse.urljoin(URL, 'synonyms')
+    path = urllib.parse.urljoin(service_url("name_resolver"), 'synonyms')
     # set autocomplete to be false by default
     response = requests.get(path, params={'preferred_curies': query, **kwargs})
     if response.status_code == 200:
@@ -107,7 +113,7 @@ def synonyms(query: str|list, **kwargs):
         raise requests.RequestException('Response from server had error, code ' + str(response.status_code) + ' ' + str(response))
 
 
-def chunk_list(data:list, size:int):
+def chunk_list(data:list, size:int) -> list:
     #Extra method to help chunk large files and avoid 504 error.
     chunks = []
     for i in range(0, len(data), size):
@@ -115,7 +121,7 @@ def chunk_list(data:list, size:int):
     return chunks
 
 
-def batch_lookup(strings:list[str], size: int=25, return_top_response:bool=True, return_synonyms:bool=False, **kwargs) -> dict:
+def batch_lookup(strings:list[str], size: int=25, return_top_response:bool=True, return_synonyms:bool=False, **kwargs) -> dict[str, TranslatorNode|list[TranslatorNode]]:
     """
     A wrapper around the `bulk-lookup` api endpoint. Given a list of query strings, this returns a TranslatorNode object or a list of TranslatorNode objects corresponding to the given name.
 
@@ -142,7 +148,7 @@ def batch_lookup(strings:list[str], size: int=25, return_top_response:bool=True,
     {'AML': TranslatorNode(curie='MONDO:0018874', label='acute myeloid leukemia',...),
      'CML': TranslatorNode(curie='MONDO:0010809', label='familial chronic myelocytic leukemia-like syndrome',...)}
     """
-    path = urllib.parse.urljoin(URL, 'bulk-lookup')
+    path = urllib.parse.urljoin(service_url("name_resolver"), 'bulk-lookup')
     curies = {}
     chunks = chunk_list(strings, size)
     for chunk in chunks:
@@ -174,7 +180,7 @@ def batch_lookup(strings:list[str], size: int=25, return_top_response:bool=True,
     return curies
 
 
-def batch_synonyms(strings:list[str], size:int=50, **kwargs) -> dict:
+def batch_synonyms(strings:list[str], size:int=50, **kwargs) -> dict[str, TranslatorNode]:
     """
     A wrapper around the `synonyms` API endpoint, using POST. Given a list of CURIEs, this returns a dict of CURIE:TranslatorNode, where each TranslatorNode contains all synonyms for the given CURIE.
 
@@ -190,7 +196,7 @@ def batch_synonyms(strings:list[str], size:int=50, **kwargs) -> dict:
     Dict of CURIE : TranslatorNode
     """
     chunks = chunk_list(strings, size)
-    path = urllib.parse.urljoin(URL, 'synonyms')
+    path = urllib.parse.urljoin(service_url("name_resolver"), 'synonyms')
     curies = {}
     for chunk in chunks:
         # set autocomplete to be false by default
@@ -209,5 +215,4 @@ def batch_synonyms(strings:list[str], size:int=50, **kwargs) -> dict:
         else:
             raise requests.RequestException('Response from server had error, code ' + str(response.status_code) + ' ' + str(response))
     return curies
-
 

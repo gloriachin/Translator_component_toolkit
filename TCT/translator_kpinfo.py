@@ -5,9 +5,25 @@ import requests
 import json
 import pandas as pd
 
-"""This is the root URL for the resource."""
-URL = 'https://smart-api.info/api/query?q=tags.name:translator'
+from .config import get_runtime_config, service_url
 
+
+def _select_provider_url(
+    prod_url: str | None,
+    ci_url: str | None,
+    test_url: str | None,
+    environment: str,
+) -> str | None:
+    """Prefer the selected environment, then non-test URLs, then test."""
+    selected_url = {
+        "prod": prod_url,
+        "ci": ci_url,
+        "test": test_url,
+    }.get(environment)
+    return selected_url or prod_url or ci_url or test_url
+
+
+"""This is the root URL for the resource."""
 def get_translator_kp_info() -> tuple[pd.DataFrame, dict[str, str]]:
     """
     Get the SmartAPI Translator KP info from the smart-api.info API.
@@ -28,7 +44,7 @@ def get_translator_kp_info() -> tuple[pd.DataFrame, dict[str, str]]:
     >>> print(Translator_KP_info.head())
     """
     # Get x-bte smartapi specs
-    url = "https://smart-api.info/api/query?q=tags.name:translator AND tags.name:trapi&size=1000&sort=_seq_no&raw=1&fields=paths,servers,tags,components.x-bte*,info,_meta"
+    url = service_url("smartapi_registry")
     response = requests.get(url)
     try:
         response.raise_for_status()
@@ -128,11 +144,15 @@ def get_translator_kp_info() -> tuple[pd.DataFrame, dict[str, str]]:
         'test_url': test_url_list,
     })
     
+    environment = get_runtime_config().environment
     API_names = {}
     for i in range(len(smartapi_df)):
-        if prod_url_list[i] is not None:
-            #API_names[smartapi_df['title'][i]] = smartapi_df['prod_url'][i] + 'query/'
-            API_names[smartapi_df['title'].values[i]] = prod_url_list[i]
-        else:
-            API_names[smartapi_df['title'].values[i]] = ci_url_list[i] 
+        selected_url = _select_provider_url(
+            prod_url_list[i],
+            ci_url_list[i],
+            test_url_list[i],
+            environment,
+        )
+        if selected_url is not None:
+            API_names[smartapi_df['title'].values[i]] = selected_url
     return smartapi_df, API_names
