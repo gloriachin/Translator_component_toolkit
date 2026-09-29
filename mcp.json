@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "translator-component-toolkit": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--extra",
+        "mcp",
+        "--directory",
+        "/Users/gqin/Github_repo/Translator_component_toolkit",
+        "python",
+        "main.py"
+      ],
+      "timeout": 300000
+    },
+    "biothings-all": {
+      "command": "uvx",
+      "args": [
+        "smartapi-mcp",
+        "--api_set",
+        "biothings_all"
+      ]
+    }
+  }
+}
